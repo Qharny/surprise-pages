@@ -21,12 +21,37 @@ export const themes = [
 ] as const;
 
 export function encodeSurpriseData(data: SurpriseData): string {
-  return btoa(encodeURIComponent(JSON.stringify(data)));
+  // Use single-letter keys for compact URLs
+  const compact = {
+    s: data.senderName,
+    r: data.receiverName,
+    o: data.occasion,
+    m: data.message,
+    t: data.theme,
+  };
+  return btoa(JSON.stringify(compact))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
 }
 
 export function decodeSurpriseData(encoded: string): SurpriseData | null {
   try {
-    return JSON.parse(decodeURIComponent(atob(encoded)));
+    // Restore base64 padding and chars
+    let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    const compact = JSON.parse(atob(b64));
+    // Support both compact and legacy formats
+    if (compact.s) {
+      return {
+        senderName: compact.s,
+        receiverName: compact.r,
+        occasion: compact.o,
+        message: compact.m || "",
+        theme: compact.t,
+      };
+    }
+    return compact as SurpriseData;
   } catch {
     return null;
   }
