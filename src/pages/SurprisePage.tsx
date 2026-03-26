@@ -99,16 +99,36 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
     frame();
   }, []);
 
-  const handleShare = useCallback(() => {
-    const url = window.location.href;
+  const shareUrl = window.location.href;
+  const shareText = `${data.senderName} made a surprise for ${data.receiverName}! ❤️`;
+
+  const handleCopyLink = useCallback(() => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [shareUrl]);
+
+  const handleWhatsApp = useCallback(() => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText + "\n" + shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleTelegram = useCallback(() => {
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleTwitter = useCallback(() => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleEmail = useCallback(() => {
+    window.open(`mailto:?subject=${encodeURIComponent("A surprise for you! ❤️")}&body=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleNativeShare = useCallback(() => {
     if (navigator.share) {
-      navigator.share({ title: "A surprise for you! ❤️", url });
-    } else {
-      navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      navigator.share({ title: "A surprise for you! ❤️", text: shareText, url: shareUrl });
     }
-  }, []);
+  }, [shareText, shareUrl]);
 
   const themeEmoji = data.theme === "cute" ? "🐱" : data.theme === "funny" ? "😂" : "🌹";
 
