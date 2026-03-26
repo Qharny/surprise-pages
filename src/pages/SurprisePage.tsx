@@ -1,8 +1,14 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import confetti from "canvas-confetti";
-import { Heart, Copy, Share2, Check } from "lucide-react";
+import { Heart, Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   decodeSurpriseData,
   noMessages,
