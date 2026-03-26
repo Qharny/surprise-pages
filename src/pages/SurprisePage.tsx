@@ -232,17 +232,38 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
         )}
       </div>
 
-      {/* Share button */}
+      {/* Share menu */}
       <div className="absolute bottom-6 right-6">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleShare}
-          className="rounded-full gap-2"
-        >
-          {copied ? <Check size={14} /> : <Share2 size={14} />}
-          {copied ? "Copied!" : "Share"}
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="rounded-full gap-2">
+              {copied ? <Check size={14} /> : <Share2 size={14} />}
+              {copied ? "Copied!" : "Share"}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={handleWhatsApp} className="gap-2 cursor-pointer">
+              <MessageCircle size={16} /> WhatsApp
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleTelegram} className="gap-2 cursor-pointer">
+              <Share2 size={16} /> Telegram
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleTwitter} className="gap-2 cursor-pointer">
+              <Share2 size={16} /> Twitter / X
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEmail} className="gap-2 cursor-pointer">
+              <Mail size={16} /> Email
+            </DropdownMenuItem>
+            {typeof navigator.share === "function" && (
+              <DropdownMenuItem onClick={handleNativeShare} className="gap-2 cursor-pointer">
+                <Share2 size={16} /> More...
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuItem onClick={handleCopyLink} className="gap-2 cursor-pointer">
+              <Link2 size={16} /> {copied ? "Copied!" : "Copy Link"}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <p className="absolute bottom-6 left-6 text-muted-foreground text-xs">
