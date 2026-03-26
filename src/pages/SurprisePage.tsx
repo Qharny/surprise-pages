@@ -1,8 +1,14 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import confetti from "canvas-confetti";
-import { Heart, Copy, Share2, Check } from "lucide-react";
+import { Heart, Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   decodeSurpriseData,
   noMessages,
@@ -93,16 +99,36 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
     frame();
   }, []);
 
-  const handleShare = useCallback(() => {
-    const url = window.location.href;
+  const shareUrl = window.location.href;
+  const shareText = `${data.senderName} made a surprise for ${data.receiverName}! ❤️`;
+
+  const handleCopyLink = useCallback(() => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [shareUrl]);
+
+  const handleWhatsApp = useCallback(() => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText + "\n" + shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleTelegram = useCallback(() => {
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleTwitter = useCallback(() => {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleEmail = useCallback(() => {
+    window.open(`mailto:?subject=${encodeURIComponent("A surprise for you! ❤️")}&body=${encodeURIComponent(shareText + "\n\n" + shareUrl)}`, "_blank");
+  }, [shareText, shareUrl]);
+
+  const handleNativeShare = useCallback(() => {
     if (navigator.share) {
-      navigator.share({ title: "A surprise for you! ❤️", url });
-    } else {
-      navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      navigator.share({ title: "A surprise for you! ❤️", text: shareText, url: shareUrl });
     }
-  }, []);
+  }, [shareText, shareUrl]);
 
   const themeEmoji = data.theme === "cute" ? "🐱" : data.theme === "funny" ? "😂" : "🌹";
 
@@ -206,17 +232,38 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
         )}
       </div>
 
-      {/* Share button */}
+      {/* Share menu */}
       <div className="absolute bottom-6 right-6">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleShare}
-          className="rounded-full gap-2"
-        >
-          {copied ? <Check size={14} /> : <Share2 size={14} />}
-          {copied ? "Copied!" : "Share"}
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="rounded-full gap-2">
+              {copied ? <Check size={14} /> : <Share2 size={14} />}
+              {copied ? "Copied!" : "Share"}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem onClick={handleWhatsApp} className="gap-2 cursor-pointer">
+              <MessageCircle size={16} /> WhatsApp
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleTelegram} className="gap-2 cursor-pointer">
+              <Share2 size={16} /> Telegram
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleTwitter} className="gap-2 cursor-pointer">
+              <Share2 size={16} /> Twitter / X
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEmail} className="gap-2 cursor-pointer">
+              <Mail size={16} /> Email
+            </DropdownMenuItem>
+            {typeof navigator.share === "function" && (
+              <DropdownMenuItem onClick={handleNativeShare} className="gap-2 cursor-pointer">
+                <Share2 size={16} /> More...
+              </DropdownMenuItem>
+            )}
+            <DropdownMenuItem onClick={handleCopyLink} className="gap-2 cursor-pointer">
+              <Link2 size={16} /> {copied ? "Copied!" : "Copy Link"}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       <p className="absolute bottom-6 left-6 text-muted-foreground text-xs">
