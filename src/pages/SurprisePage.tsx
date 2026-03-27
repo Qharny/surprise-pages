@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   decodeSurpriseData,
-  noMessages,
+  getOccasionButtons,
   getOccasionMessage,
   getSuccessMessage,
   type SurpriseData,
@@ -41,14 +41,15 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
   const noRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const buttons = getOccasionButtons(data.occasion);
   const yesScale = 1 + noCount * 0.15;
   const noScale = Math.max(0.4, 1 - noCount * 0.12);
-  const noHidden = noCount >= noMessages.length;
+  const noHidden = noCount >= buttons.noMessages.length;
 
   const currentMessage =
     noCount === 0
       ? getOccasionMessage(data.occasion, data.senderName, data.receiverName)
-      : noMessages[Math.min(noCount - 1, noMessages.length - 1)];
+      : buttons.noMessages[Math.min(noCount - 1, buttons.noMessages.length - 1)];
 
   const handleNo = useCallback(() => {
     const next = noCount + 1;
@@ -208,7 +209,7 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
               padding: `${12 + noCount * 4}px ${24 + noCount * 8}px`,
             }}
           >
-            Yes 💖
+            {buttons.yesLabel}
           </Button>
 
           {!noHidden && (
@@ -220,7 +221,7 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
                 transform: `scale(${noScale})`,
               }}
             >
-              No 😢
+              {buttons.noLabel}
             </button>
           )}
         </div>
