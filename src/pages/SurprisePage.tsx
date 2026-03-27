@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import confetti from "canvas-confetti";
+
 import { Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BirthdayCelebration from "@/components/celebrations/BirthdayCelebration";
@@ -81,27 +81,6 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
 
   const handleYes = useCallback(() => {
     setAccepted(true);
-    // Fire confetti
-    const duration = 3000;
-    const end = Date.now() + duration;
-    const frame = () => {
-      confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ["#ff6b8a", "#ff9a5c", "#ffd93d", "#a78bfa"],
-      });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ["#ff6b8a", "#ff9a5c", "#ffd93d", "#a78bfa"],
-      });
-      if (Date.now() < end) requestAnimationFrame(frame);
-    };
-    frame();
   }, []);
 
   const shareUrl = window.location.href;
