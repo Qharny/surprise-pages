@@ -62,15 +62,86 @@ export function generateSlug(sender: string, receiver: string): string {
   return `${clean(sender)}-loves-${clean(receiver)}`;
 }
 
-export const noMessages = [
-  "Are you sure? 🥺",
-  "Think again! 💭",
-  "Don't do me like this 😭",
-  "Pretty please? 🙏",
-  "I won't give up! 💪",
-  "Last chance... 😢",
-  "Just click Yes already 😭❤️",
-];
+export interface OccasionButtons {
+  yesLabel: string;
+  noLabel: string;
+  noMessages: string[];
+}
+
+export function getOccasionButtons(occasion: string): OccasionButtons {
+  switch (occasion) {
+    case "valentine":
+      return {
+        yesLabel: "Yes 💖",
+        noLabel: "No 😢",
+        noMessages: [
+          "Are you sure? 🥺",
+          "Think again! 💭",
+          "Don't do me like this 😭",
+          "Pretty please? 🙏",
+          "I won't give up! 💪",
+          "Last chance... 😢",
+          "Just click Yes already 😭❤️",
+        ],
+      };
+    case "birthday":
+      return {
+        yesLabel: "Open Gift 🎁",
+        noLabel: "Maybe Later",
+        noMessages: [
+          "But it's wrapped so nicely! 🎀",
+          "Come on, just a peek? 👀",
+          "The gift is getting sad 😢",
+          "It's calling your name! 📦",
+          "You really don't want it? 🥺",
+          "Fine... but it's still here 🎁",
+          "JUST OPEN IT ALREADY 🎉",
+        ],
+      };
+    case "confession":
+      return {
+        yesLabel: "Say Yes 😍",
+        noLabel: "Run Away 🏃",
+        noMessages: [
+          "You can't run from feelings! 💨",
+          "Come back! 😭",
+          "I'm still here waiting... 🥺",
+          "My heart is chasing you! 💕",
+          "You can run but you can't hide 🫣",
+          "Please stop running! 😩",
+          "Okay I caught you. Now say yes 😏",
+        ],
+      };
+    case "anniversary":
+      return {
+        yesLabel: "Forever Yours 💍",
+        noLabel: "Need Space 😬",
+        noMessages: [
+          "After all these years?! 😱",
+          "Remember our first date? 🥺",
+          "But we've been through so much! 💔",
+          "My heart can't take this 😭",
+          "Think of all the memories! 📸",
+          "You don't really mean that... 🥹",
+          "Come on, you know you love me 💕",
+        ],
+      };
+    default:
+      return {
+        yesLabel: "Yes ✨",
+        noLabel: "No 😢",
+        noMessages: [
+          "Are you sure? 🥺",
+          "Think again! 💭",
+          "Don't do me like this 😭",
+          "Pretty please? 🙏",
+          "I won't give up! 💪",
+          "Last chance... 😢",
+          "Just say yes already ✨",
+        ],
+      };
+  }
+}
 
 export function getOccasionMessage(occasion: string, sender: string, receiver: string): string {
   switch (occasion) {

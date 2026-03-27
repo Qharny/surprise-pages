@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   decodeSurpriseData,
-  noMessages,
+  getOccasionButtons,
   getOccasionMessage,
   getSuccessMessage,
   type SurpriseData,
