@@ -1,8 +1,12 @@
 import { useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import confetti from "canvas-confetti";
-import { Heart, Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
+
+import { Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BirthdayCelebration from "@/components/celebrations/BirthdayCelebration";
+import ValentineCelebration from "@/components/celebrations/ValentineCelebration";
+import ConfessionCelebration from "@/components/celebrations/ConfessionCelebration";
+import AnniversaryCelebration from "@/components/celebrations/AnniversaryCelebration";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,27 +81,6 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
 
   const handleYes = useCallback(() => {
     setAccepted(true);
-    // Fire confetti
-    const duration = 3000;
-    const end = Date.now() + duration;
-    const frame = () => {
-      confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: ["#ff6b8a", "#ff9a5c", "#ffd93d", "#a78bfa"],
-      });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: ["#ff6b8a", "#ff9a5c", "#ffd93d", "#a78bfa"],
-      });
-      if (Date.now() < end) requestAnimationFrame(frame);
-    };
-    frame();
   }, []);
 
   const shareUrl = window.location.href;
@@ -134,29 +117,14 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
   const themeEmoji = data.theme === "cute" ? "🐱" : data.theme === "funny" ? "😂" : "🌹";
 
   if (accepted) {
-    return (
-      <div className="min-h-screen gradient-hero flex flex-col items-center justify-center px-4 text-center">
-        <div className="animate-bounce-in">
-          <Heart className="mx-auto text-primary-foreground animate-heartbeat mb-6" size={80} />
-          <h1 className="text-3xl md:text-5xl font-display text-primary-foreground mb-4">
-            Yaaay! 🎉
-          </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 font-semibold mb-3">
-            {getSuccessMessage(data.occasion, data.senderName)}
-          </p>
-          {data.message && (
-            <div className="bg-card/20 backdrop-blur-sm rounded-2xl p-4 max-w-md mx-auto mb-6">
-              <p className="text-primary-foreground italic text-lg">"{data.message}"</p>
-              <p className="text-primary-foreground/70 text-sm mt-2">— {data.senderName}</p>
-            </div>
-          )}
-          <p className="text-6xl mb-8">{themeEmoji}</p>
-        </div>
-        <p className="text-primary-foreground/60 text-xs mt-8">
-          Made with ❤️ by {data.senderName}
-        </p>
-      </div>
-    );
+    const CelebrationComponent = {
+      valentine: ValentineCelebration,
+      birthday: BirthdayCelebration,
+      confession: ConfessionCelebration,
+      anniversary: AnniversaryCelebration,
+    }[data.occasion] || ValentineCelebration;
+
+    return <CelebrationComponent data={data} />;
   }
 
   return (
