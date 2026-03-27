@@ -1,7 +1,12 @@
 import { useState, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import confetti from "canvas-confetti";
-import { Heart, Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
+import { Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BirthdayCelebration from "@/components/celebrations/BirthdayCelebration";
+import ValentineCelebration from "@/components/celebrations/ValentineCelebration";
+import ConfessionCelebration from "@/components/celebrations/ConfessionCelebration";
+import AnniversaryCelebration from "@/components/celebrations/AnniversaryCelebration";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

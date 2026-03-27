@@ -148,3 +148,94 @@
 .animate-heartbeat {
   animation: heartbeat 1.5s ease-in-out infinite;
 }
+
+/* Gift animations */
+@keyframes giftShake {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(-12deg); }
+  30% { transform: rotate(12deg); }
+  45% { transform: rotate(-8deg); }
+  60% { transform: rotate(8deg); }
+  75% { transform: rotate(-4deg); }
+  90% { transform: rotate(4deg); }
+}
+
+.animate-gift-shake {
+  animation: giftShake 0.6s ease-in-out infinite;
+}
+
+@keyframes giftOpen {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+.animate-gift-open {
+  animation: giftOpen 0.8s ease-in forwards;
+}
+
+@keyframes giftBurst {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--burst-x)), calc(-50% + var(--burst-y))) scale(1.2); opacity: 0; }
+}
+
+.animate-gift-burst {
+  animation: giftBurst 1s ease-out forwards;
+}
+
+@keyframes balloonRise {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(15deg); opacity: 0.8; }
+}
+
+.animate-balloon-rise {
+  bottom: 0;
+  animation: balloonRise 4s ease-out forwards;
+}
+
+/* Heart rise animation */
+@keyframes heartRise {
+  0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-50px) scale(1); opacity: 0; }
+}
+
+.animate-heart-rise {
+  bottom: 0;
+  animation: heartRise 4s ease-out forwards;
+}
+
+/* Confession ring pulse */
+@keyframes confessionRing {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.animate-confession-ring {
+  animation: confessionRing 2s ease-out infinite;
+}
+
+/* Anniversary ring spin */
+@keyframes anniversaryRing {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(5deg); }
+  50% { transform: scale(1) rotate(0deg); }
+  75% { transform: scale(1.1) rotate(-5deg); }
+}
+
+.animate-anniversary-ring {
+  animation: anniversaryRing 1.5s ease-in-out infinite;
+}
+
+/* Sparkle float */
+@keyframes sparkleFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+  50% { transform: translateY(-15px) scale(1.3); opacity: 0.8; }
+}
+
+.animate-sparkle-float {
+  animation: sparkleFloat 2.5s ease-in-out infinite;
+}
