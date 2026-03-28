@@ -3,6 +3,7 @@ import { Heart } from "lucide-react";
 import confetti from "canvas-confetti";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
+import { playValentineSound } from "@/lib/celebration-sounds";
 
 export default function ValentineCelebration({ data }: { data: SurpriseData }) {
   useEffect(() => {

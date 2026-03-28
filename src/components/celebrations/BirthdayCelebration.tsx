@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
+import { playBirthdaySound } from "@/lib/celebration-sounds";
 
 const giftItems = ["🧸", "🎮", "👟", "📱", "💎", "🍫", "🎧", "🌸", "⭐", "🎈"];
 
