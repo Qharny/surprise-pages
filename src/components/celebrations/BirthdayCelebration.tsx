@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
 import { playBirthdaySound } from "@/lib/celebration-sounds";
+import { useTypingAnimation } from "@/hooks/use-typing-animation";
+import TypingMessage from "./TypingMessage";
 
 const giftItems = ["🧸", "🎮", "👟", "📱", "💎", "🍫", "🎧", "🌸", "⭐", "🎈"];
 
@@ -55,12 +57,7 @@ export default function BirthdayCelebration({ data }: { data: SurpriseData }) {
           <p className="text-xl md:text-2xl text-primary-foreground/90 font-semibold mb-3">
             {getSuccessMessage(data.occasion, data.senderName)}
           </p>
-          {data.message && (
-            <div className="bg-card/20 backdrop-blur-sm rounded-2xl p-4 max-w-md mx-auto mb-6">
-              <p className="text-primary-foreground italic text-lg">"{data.message}"</p>
-              <p className="text-primary-foreground/70 text-sm mt-2">— {data.senderName}</p>
-            </div>
-          )}
+          {data.message && <TypingMessage message={data.message} sender={data.senderName} variant="hero" />}
 
           {/* Floating balloons */}
           <div className="fixed inset-0 pointer-events-none overflow-hidden">
