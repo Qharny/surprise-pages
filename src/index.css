@@ -239,3 +239,13 @@
 .animate-sparkle-float {
   animation: sparkleFloat 2.5s ease-in-out infinite;
 }
+
+/* Sad breathing animation */
+@keyframes sadBreathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.05) translateY(-4px); }
+}
+
+.animate-sad-breathe {
+  animation: sadBreathe 2.5s ease-in-out infinite;
+}
