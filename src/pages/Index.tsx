@@ -1,10 +1,35 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, Sparkles, Gift, Send } from "lucide-react";
+import { Heart, Sparkles, Gift, Send, MessageCircleHeart, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { occasions, themes, encodeSurpriseData, generateSlug } from "@/lib/surprise";
+
+const MESSAGE_MAX = 300;
+
+const placeholdersByOccasion: Record<string, string[]> = {
+  valentine: [
+    "You make my heart skip a beat 💓",
+    "Every moment with you is magical ✨",
+    "You're the reason I believe in love 🌹",
+  ],
+  birthday: [
+    "Wishing you the happiest birthday ever! 🎂",
+    "May all your dreams come true today 🌟",
+    "Another year of being awesome! 🥳",
+  ],
+  confession: [
+    "I've been wanting to tell you something… 💕",
+    "You make every day brighter just by being you ☀️",
+    "I can't stop thinking about you 🦋",
+  ],
+  anniversary: [
+    "Every day with you is a gift 💍",
+    "Here's to forever with you 🥂",
+    "You still give me butterflies 🦋",
+  ],
+};
 
 const Index = () => {
   const navigate = useNavigate();
@@ -13,6 +38,16 @@ const Index = () => {
   const [occasion, setOccasion] = useState("valentine");
   const [message, setMessage] = useState("");
   const [theme, setTheme] = useState("romantic");
+  const [showPreview, setShowPreview] = useState(false);
+
+  const placeholders = placeholdersByOccasion[occasion] || placeholdersByOccasion.valentine;
+  const randomPlaceholder = useMemo(
+    () => placeholders[Math.floor(Math.random() * placeholders.length)],
+    [occasion]
+  );
+
+  const charCount = message.length;
+  const charPercent = (charCount / MESSAGE_MAX) * 100;
 
   const handleGenerate = () => {
     if (!senderName.trim() || !receiverName.trim()) return;
@@ -28,6 +63,10 @@ const Index = () => {
     const encoded = encodeSurpriseData(data);
     const slug = generateSlug(data.senderName, data.receiverName);
     navigate(`/s/${slug}?d=${encoded}`);
+  };
+
+  const handleSuggestionClick = (text: string) => {
+    setMessage(text);
   };
 
   return (
@@ -134,19 +173,95 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Message */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-foreground">
-              Custom Message <span className="text-muted-foreground font-normal">(optional)</span>
+          {/* Custom Message */}
+          <div className="space-y-3">
+            <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <MessageCircleHeart size={16} /> Custom Message
+              <span className="text-muted-foreground font-normal text-xs">(optional)</span>
             </label>
-            <Textarea
-              placeholder="Write something sweet…"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="rounded-xl resize-none"
-              rows={3}
-              maxLength={300}
-            />
+
+            {/* Suggestion chips */}
+            <div className="flex flex-wrap gap-2">
+              {placeholders.map((p, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => handleSuggestionClick(p)}
+                  className="text-xs px-3 py-1.5 rounded-full border border-border bg-muted/50 text-muted-foreground hover:bg-primary/10 hover:border-primary/50 hover:text-foreground transition-all duration-200"
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative">
+              <Textarea
+                placeholder={randomPlaceholder}
+                value={message}
+                onChange={(e) => {
+                  if (e.target.value.length <= MESSAGE_MAX) {
+                    setMessage(e.target.value);
+                  }
+                }}
+                className="rounded-xl resize-none pr-4 pb-8"
+                rows={3}
+                maxLength={MESSAGE_MAX}
+              />
+              {/* Character counter */}
+              <div className="absolute bottom-2 right-3 flex items-center gap-2">
+                <span
+                  className={`text-xs font-medium transition-colors ${
+                    charPercent > 90
+                      ? "text-destructive"
+                      : charPercent > 70
+                      ? "text-secondary"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {charCount}/{MESSAGE_MAX}
+                </span>
+              </div>
+              {/* Progress bar */}
+              {charCount > 0 && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-b-xl overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      charPercent > 90
+                        ? "bg-destructive"
+                        : charPercent > 70
+                        ? "bg-secondary"
+                        : "bg-primary"
+                    }`}
+                    style={{ width: `${charPercent}%` }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Live preview toggle */}
+            {message.trim() && (
+              <button
+                type="button"
+                onClick={() => setShowPreview(!showPreview)}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {showPreview ? <EyeOff size={14} /> : <Eye size={14} />}
+                {showPreview ? "Hide preview" : "Preview message"}
+              </button>
+            )}
+
+            {/* Message preview */}
+            {showPreview && message.trim() && (
+              <div className="rounded-xl border border-border bg-muted/30 p-4 animate-fade-in">
+                <p className="text-xs text-muted-foreground mb-1">How it'll look:</p>
+                <div className="rounded-lg bg-card p-3 shadow-sm border border-border">
+                  <p className="italic text-foreground">"{message.trim()}"</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    — {senderName.trim() || "Your Name"}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Generate */}
