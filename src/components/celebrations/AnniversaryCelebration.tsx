@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
+import { playAnniversarySound } from "@/lib/celebration-sounds";
 
 export default function AnniversaryCelebration({ data }: { data: SurpriseData }) {
   const [phase, setPhase] = useState<"sparkle" | "reveal">("sparkle");
 
   useEffect(() => {
+    playAnniversarySound();
     // Golden confetti
     confetti({
       particleCount: 80,

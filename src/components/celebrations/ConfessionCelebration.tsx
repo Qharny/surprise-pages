@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
+import { playConfessionSound } from "@/lib/celebration-sounds";
 
 export default function ConfessionCelebration({ data }: { data: SurpriseData }) {
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
+    playConfessionSound();
     // Heart-shaped confetti burst
     const colors = ["#ff6b8a", "#ff9a5c", "#a78bfa", "#ffd93d"];
     confetti({
