@@ -5,6 +5,7 @@ import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
 import { playValentineSound } from "@/lib/celebration-sounds";
 import { useTypingAnimation } from "@/hooks/use-typing-animation";
+import TypingMessage from "./TypingMessage";
 
 export default function ValentineCelebration({ data }: { data: SurpriseData }) {
   useEffect(() => {

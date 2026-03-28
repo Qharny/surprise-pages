@@ -3,6 +3,7 @@ import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
 import { playBirthdaySound } from "@/lib/celebration-sounds";
 import { useTypingAnimation } from "@/hooks/use-typing-animation";
+import TypingMessage from "./TypingMessage";
 
 const giftItems = ["🧸", "🎮", "👟", "📱", "💎", "🍫", "🎧", "🌸", "⭐", "🎈"];
 
