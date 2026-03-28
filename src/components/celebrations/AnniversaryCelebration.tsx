@@ -3,6 +3,7 @@ import confetti from "canvas-confetti";
 import type { SurpriseData } from "@/lib/surprise";
 import { getSuccessMessage } from "@/lib/surprise";
 import { playAnniversarySound } from "@/lib/celebration-sounds";
+import { useTypingAnimation } from "@/hooks/use-typing-animation";
 
 export default function AnniversaryCelebration({ data }: { data: SurpriseData }) {
   const [phase, setPhase] = useState<"sparkle" | "reveal">("sparkle");
@@ -67,12 +68,7 @@ export default function AnniversaryCelebration({ data }: { data: SurpriseData })
           <p className="text-xl md:text-2xl text-foreground font-semibold mb-3">
             {getSuccessMessage(data.occasion, data.senderName)}
           </p>
-          {data.message && (
-            <div className="bg-card rounded-2xl shadow-lg p-4 max-w-md mx-auto mb-6 border border-border">
-              <p className="text-foreground italic text-lg">"{data.message}"</p>
-              <p className="text-muted-foreground text-sm mt-2">— {data.senderName}</p>
-            </div>
-          )}
+          {data.message && <TypingMessage message={data.message} sender={data.senderName} variant="card" />}
 
           <div className="flex justify-center gap-3 text-2xl">
             {["🥂", "💖", "✨", "💖", "🥂"].map((e, i) => (
