@@ -8,6 +8,7 @@ export default function AnniversaryCelebration({ data }: { data: SurpriseData })
   const [phase, setPhase] = useState<"sparkle" | "reveal">("sparkle");
 
   useEffect(() => {
+    playAnniversarySound();
     // Golden confetti
     confetti({
       particleCount: 80,

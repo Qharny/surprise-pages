@@ -9,6 +9,7 @@ export default function BirthdayCelebration({ data }: { data: SurpriseData }) {
   const [phase, setPhase] = useState<"shake" | "open" | "reveal">("shake");
 
   useEffect(() => {
+    playBirthdaySound();
     const t1 = setTimeout(() => setPhase("open"), 1500);
     const t2 = setTimeout(() => setPhase("reveal"), 2800);
     return () => { clearTimeout(t1); clearTimeout(t2); };
