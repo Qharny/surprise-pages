@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from "react";
+import sadCatImg from "@/assets/sad-cat.png";
 import { useSearchParams } from "react-router-dom";
 
 import { Share2, Check, MessageCircle, Mail, Link2 } from "lucide-react";
@@ -28,8 +29,48 @@ const SurprisePage = () => {
 
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-muted-foreground text-lg">This surprise link is invalid or expired 😢</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
+        {/* Floating broken hearts */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(5)].map((_, i) => (
+            <span
+              key={i}
+              className="absolute text-xl opacity-10 animate-float"
+              style={{
+                left: `${15 + i * 18}%`,
+                top: `${10 + (i % 3) * 25}%`,
+                animationDelay: `${i * 0.8}s`,
+              }}
+            >
+              💔
+            </span>
+          ))}
+        </div>
+
+        <img
+          src={sadCatImg}
+          alt="Sad cat holding a broken heart"
+          width={200}
+          height={200}
+          className="animate-sad-breathe mb-6 drop-shadow-lg"
+        />
+
+        <h1 className="text-2xl md:text-3xl font-display text-gradient mb-3 animate-bounce-in">
+          Oops!
+        </h1>
+        <p className="text-muted-foreground text-lg mb-2 animate-fade-in">
+          This surprise link is invalid or expired 😢
+        </p>
+        <p className="text-muted-foreground/70 text-sm mb-8 animate-fade-in">
+          Maybe the surprise was already opened, or the link got lost along the way.
+        </p>
+
+        <a
+          href="/"
+          className="rounded-full bg-primary text-primary-foreground font-bold px-8 py-3 transition-all hover:scale-105 animate-bounce-in"
+        >
+          Create a New Surprise ❤️
+        </a>
       </div>
     );
   }
