@@ -7,6 +7,7 @@ import { playValentineSound } from "@/lib/celebration-sounds";
 
 export default function ValentineCelebration({ data }: { data: SurpriseData }) {
   useEffect(() => {
+    playValentineSound();
     const duration = 3000;
     const end = Date.now() + duration;
     const frame = () => {
