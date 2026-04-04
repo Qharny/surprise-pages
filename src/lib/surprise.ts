@@ -23,7 +23,6 @@ export const themes = [
 ] as const;
 
 export function encodeSurpriseData(data: SurpriseData): string {
-  // Use single-letter keys for compact URLs
   const compact = {
     s: data.senderName,
     r: data.receiverName,
@@ -31,19 +30,30 @@ export function encodeSurpriseData(data: SurpriseData): string {
     m: data.message,
     t: data.theme,
   };
-  return btoa(unescape(encodeURIComponent(JSON.stringify(compact))))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+  return LZString.compressToEncodedURIComponent(JSON.stringify(compact));
 }
 
 export function decodeSurpriseData(encoded: string): SurpriseData | null {
   try {
-    // Restore base64 padding and chars
+    // Try LZ-compressed format first
+    const decompressed = LZString.decompressFromEncodedURIComponent(encoded);
+    if (decompressed) {
+      const compact = JSON.parse(decompressed);
+      if (compact.s) {
+        return {
+          senderName: compact.s,
+          receiverName: compact.r,
+          occasion: compact.o,
+          message: compact.m || "",
+          theme: compact.t,
+        };
+      }
+      return compact as SurpriseData;
+    }
+    // Fallback: legacy base64 format
     let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
     while (b64.length % 4) b64 += "=";
     const compact = JSON.parse(decodeURIComponent(escape(atob(b64))));
-    // Support both compact and legacy formats
     if (compact.s) {
       return {
         senderName: compact.s,
