@@ -1,3 +1,5 @@
+import LZString from "lz-string";
+
 export interface SurpriseData {
   senderName: string;
   receiverName: string;
