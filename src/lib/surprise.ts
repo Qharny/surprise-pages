@@ -32,10 +32,6 @@ export function encodeSurpriseData(data: SurpriseData): string {
     t: data.theme,
   };
   return LZString.compressToEncodedURIComponent(JSON.stringify(compact));
-  return btoa(JSON.stringify(compact))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
 }
 
 export function decodeSurpriseData(encoded: string): SurpriseData | null {
