@@ -29,7 +29,7 @@ export function encodeSurpriseData(data: SurpriseData): string {
     m: data.message,
     t: data.theme,
   };
-  return btoa(JSON.stringify(compact))
+  return btoa(unescape(encodeURIComponent(JSON.stringify(compact))))
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
     .replace(/=+$/, "");
