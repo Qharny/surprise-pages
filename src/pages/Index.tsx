@@ -200,6 +200,9 @@ const Index = () => {
                 value={message}
                 onChange={(e) => {
                   setMessage(e.target.value.slice(0, MESSAGE_MAX));
+                  if (e.target.value.length <= MESSAGE_MAX) {
+                    setMessage(e.target.value);
+                  }
                 }}
                 className="rounded-xl resize-none pr-4 pb-8"
                 rows={3}
