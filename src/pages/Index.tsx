@@ -199,9 +199,7 @@ const Index = () => {
                 placeholder={randomPlaceholder}
                 value={message}
                 onChange={(e) => {
-                  if (e.target.value.length <= MESSAGE_MAX) {
-                    setMessage(e.target.value);
-                  }
+                  setMessage(e.target.value.slice(0, MESSAGE_MAX));
                 }}
                 className="rounded-xl resize-none pr-4 pb-8"
                 rows={3}
