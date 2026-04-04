@@ -199,6 +199,7 @@ const Index = () => {
                 placeholder={randomPlaceholder}
                 value={message}
                 onChange={(e) => {
+                  setMessage(e.target.value.slice(0, MESSAGE_MAX));
                   if (e.target.value.length <= MESSAGE_MAX) {
                     setMessage(e.target.value);
                   }
