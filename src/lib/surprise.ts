@@ -40,7 +40,7 @@ export function decodeSurpriseData(encoded: string): SurpriseData | null {
     // Restore base64 padding and chars
     let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
     while (b64.length % 4) b64 += "=";
-    const compact = JSON.parse(atob(b64));
+    const compact = JSON.parse(decodeURIComponent(escape(atob(b64))));
     // Support both compact and legacy formats
     if (compact.s) {
       return {
