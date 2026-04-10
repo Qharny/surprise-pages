@@ -35,7 +35,7 @@ const Index = () => {
   const navigate = useNavigate();
   const [senderName, setSenderName] = useState("");
   const [receiverName, setReceiverName] = useState("");
-  const [occasion, setOccasion] = useState("valentine");
+  const [occasion, setOccasion] = useState("birthday");
   const [message, setMessage] = useState("");
   const [theme, setTheme] = useState("romantic");
   const [showPreview, setShowPreview] = useState(false);
@@ -90,10 +90,10 @@ const Index = () => {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-display text-primary-foreground mb-4 animate-bounce-in">
-            Create a Special Surprise ❤️
+            Create a Special Surprise ✨
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 font-medium">
-            Valentine, Birthday, Confession… make it unforgettable ✨
+            Birthday, Anniversary, Confession, Valentine… make it unforgettable 🎉
           </p>
         </div>
       </section>

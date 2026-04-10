@@ -9,10 +9,10 @@ export interface SurpriseData {
 }
 
 export const occasions = [
-  { id: "valentine", label: "Valentine", emoji: "💖" },
   { id: "birthday", label: "Birthday", emoji: "🎂" },
-  { id: "confession", label: "Crush Confession", emoji: "😏" },
   { id: "anniversary", label: "Anniversary", emoji: "💍" },
+  { id: "confession", label: "Crush Confession", emoji: "😏" },
+  { id: "valentine", label: "Valentine", emoji: "💖" },
   { id: "custom", label: "Custom", emoji: "🎨" },
 ] as const;
 
@@ -72,7 +72,7 @@ export function decodeSurpriseData(encoded: string): SurpriseData | null {
 
 export function generateSlug(sender: string, receiver: string): string {
   const clean = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
-  return `${clean(sender)}-loves-${clean(receiver)}`;
+  return `${clean(sender)}-to-${clean(receiver)}`;
 }
 
 export interface OccasionButtons {
