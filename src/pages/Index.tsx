@@ -29,6 +29,26 @@ const placeholdersByOccasion: Record<string, string[]> = {
     "Here's to forever with you 🥂",
     "You still give me butterflies 🦋",
   ],
+  graduation: [
+    "So proud of everything you've achieved! 🎓",
+    "You worked so hard for this moment! 📚",
+    "The world is yours now! 🌍",
+  ],
+  apology: [
+    "I'm truly sorry for what happened 🤍",
+    "I hope you can find it in your heart to forgive me 🙏",
+    "I'll do better, I promise 💪",
+  ],
+  congratulations: [
+    "You absolutely crushed it! 🏆",
+    "So proud of you, superstar! ⭐",
+    "You deserve all the celebration! 🎊",
+  ],
+  prank: [
+    "This is totally serious btw 😏",
+    "Don't worry, nothing bad... 👀",
+    "I have a VERY important question 🤔",
+  ],
 };
 
 const Index = () => {
@@ -40,7 +60,7 @@ const Index = () => {
   const [theme, setTheme] = useState("romantic");
   const [showPreview, setShowPreview] = useState(false);
 
-  const placeholders = placeholdersByOccasion[occasion] || placeholdersByOccasion.valentine;
+  const placeholders = placeholdersByOccasion[occasion] || placeholdersByOccasion.birthday;
   const randomPlaceholder = useMemo(
     () => placeholders[Math.floor(Math.random() * placeholders.length)],
     [occasion]
@@ -93,7 +113,7 @@ const Index = () => {
             Create a Special Surprise ✨
           </h1>
           <p className="text-lg md:text-xl text-primary-foreground/90 font-medium">
-            Birthday, Anniversary, Confession, Valentine… make it unforgettable 🎉
+            Birthday, Graduation, Apology, Prank… make any moment unforgettable 🎉
           </p>
         </div>
       </section>
@@ -130,7 +150,7 @@ const Index = () => {
             <label className="text-sm font-semibold text-foreground flex items-center gap-2">
               <Gift size={16} /> Pick an Occasion
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {occasions.map((o) => (
                 <button
                   key={o.id}
@@ -143,7 +163,7 @@ const Index = () => {
                 >
                   <span className="text-lg">{o.emoji}</span>
                   <br />
-                  {o.label}
+                  <span className="text-xs">{o.label}</span>
                 </button>
               ))}
             </div>
@@ -154,7 +174,7 @@ const Index = () => {
             <label className="text-sm font-semibold text-foreground flex items-center gap-2">
               <Sparkles size={16} /> Choose a Vibe
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {themes.map((t) => (
                 <button
                   key={t.id}
@@ -167,7 +187,7 @@ const Index = () => {
                 >
                   <span className="text-lg">{t.emoji}</span>
                   <br />
-                  {t.label}
+                  <span className="text-xs">{t.label}</span>
                 </button>
               ))}
             </div>

@@ -112,6 +112,21 @@
   .animate-pulse-glow {
     animation: pulseGlow 2s ease-in-out infinite;
   }
+
+  .backdrop-blur-effect {
+    filter: blur(2px);
+    transition: filter 0.3s ease;
+  }
+
+  .screen-zoom-effect {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  .screen-invert-effect {
+    filter: invert(1);
+    transition: filter 0.3s ease;
+  }
 }
 
 @keyframes float {

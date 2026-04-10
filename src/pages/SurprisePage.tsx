@@ -8,6 +8,10 @@ import BirthdayCelebration from "@/components/celebrations/BirthdayCelebration";
 import ValentineCelebration from "@/components/celebrations/ValentineCelebration";
 import ConfessionCelebration from "@/components/celebrations/ConfessionCelebration";
 import AnniversaryCelebration from "@/components/celebrations/AnniversaryCelebration";
+import GraduationCelebration from "@/components/celebrations/GraduationCelebration";
+import ApologyCelebration from "@/components/celebrations/ApologyCelebration";
+import CongratulationsCelebration from "@/components/celebrations/CongratulationsCelebration";
+import PrankCelebration from "@/components/celebrations/PrankCelebration";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +22,37 @@ import {
   decodeSurpriseData,
   getOccasionButtons,
   getOccasionMessage,
-  getSuccessMessage,
   type SurpriseData,
 } from "@/lib/surprise";
+
+/* ── Screen effect types for dynamic reactions ── */
+type ScreenEffect = "shake" | "blur" | "zoom" | "invert" | null;
+
+const screenEffectSequence: ScreenEffect[] = [
+  null, null, null, // first 3 clicks: no effect
+  "shake",
+  "blur",
+  "zoom",
+  "invert",
+];
+
+function getScreenEffectClass(effect: ScreenEffect): string {
+  switch (effect) {
+    case "shake": return "animate-shake";
+    case "blur": return "backdrop-blur-effect";
+    case "zoom": return "screen-zoom-effect";
+    case "invert": return "screen-invert-effect";
+    default: return "";
+  }
+}
+
+/* ── Dynamic reaction emojis based on no count ── */
+function getReactionEmojis(noCount: number): string[] {
+  if (noCount <= 1) return ["😊", "💭"];
+  if (noCount <= 3) return ["😅", "😬", "💦"];
+  if (noCount <= 5) return ["😤", "🔥", "💢"];
+  return ["😈", "💀", "⚡", "🌪️"];
+}
 
 const SurprisePage = () => {
   const [searchParams] = useSearchParams();
@@ -30,7 +62,6 @@ const SurprisePage = () => {
   if (!data) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
-        {/* Floating broken hearts */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {[...Array(5)].map((_, i) => (
             <span
@@ -81,8 +112,8 @@ const SurprisePage = () => {
 function SurpriseInteraction({ data }: { data: SurpriseData }) {
   const [noCount, setNoCount] = useState(0);
   const [accepted, setAccepted] = useState(false);
-  const [shaking, setShaking] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [screenEffect, setScreenEffect] = useState<ScreenEffect>(null);
   const noRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -96,13 +127,17 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
       ? getOccasionMessage(data.occasion, data.senderName, data.receiverName)
       : buttons.noMessages[Math.min(noCount - 1, buttons.noMessages.length - 1)];
 
+  const reactionEmojis = getReactionEmojis(noCount);
+
   const handleNo = useCallback(() => {
     const next = noCount + 1;
     setNoCount(next);
 
-    if (next >= 3) {
-      setShaking(true);
-      setTimeout(() => setShaking(false), 500);
+    // Apply screen effect
+    const effect = screenEffectSequence[Math.min(next, screenEffectSequence.length - 1)];
+    if (effect) {
+      setScreenEffect(effect);
+      setTimeout(() => setScreenEffect(null), 600);
     }
 
     // Teleport the No button after click 4
@@ -155,7 +190,14 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
     }
   }, [shareText, shareUrl]);
 
-  const themeEmoji = data.theme === "cute" ? "🐱" : data.theme === "funny" ? "😂" : "🌹";
+  const themeEmoji = data.theme === "cute" ? "🐱"
+    : data.theme === "funny" ? "😂"
+    : data.theme === "anime" ? "💫"
+    : data.theme === "minimalist" ? "🖤"
+    : data.theme === "luxury" ? "✨"
+    : data.theme === "african" ? "🌍"
+    : data.theme === "meme" ? "🤣"
+    : "🌹";
 
   if (accepted) {
     const CelebrationComponent = {
@@ -163,6 +205,10 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
       birthday: BirthdayCelebration,
       confession: ConfessionCelebration,
       anniversary: AnniversaryCelebration,
+      graduation: GraduationCelebration,
+      apology: ApologyCelebration,
+      congratulations: CongratulationsCelebration,
+      prank: PrankCelebration,
     }[data.occasion] || ValentineCelebration;
 
     return <CelebrationComponent data={data} />;
@@ -172,7 +218,7 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
     <div
       ref={containerRef}
       className={`min-h-screen relative flex flex-col items-center justify-center px-4 text-center bg-background overflow-hidden ${
-        shaking ? "animate-shake" : ""
+        getScreenEffectClass(screenEffect)
       }`}
     >
       {/* Floating decorations */}
@@ -203,9 +249,24 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
           From <span className="text-gradient font-bold">{data.senderName}</span>
         </p>
 
-        <p className="text-xl md:text-2xl text-foreground font-bold mb-10 min-h-[2em] transition-all duration-300">
+        <p className="text-xl md:text-2xl text-foreground font-bold mb-4 min-h-[2em] transition-all duration-300">
           {currentMessage}
         </p>
+
+        {/* Dynamic reaction emojis */}
+        {noCount > 0 && (
+          <div className="flex justify-center gap-2 mb-6 animate-bounce-in">
+            {reactionEmojis.map((e, i) => (
+              <span
+                key={`${noCount}-${i}`}
+                className="text-2xl animate-float"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              >
+                {e}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center justify-center gap-4 relative">
           <Button

@@ -13,6 +13,10 @@ export const occasions = [
   { id: "anniversary", label: "Anniversary", emoji: "💍" },
   { id: "confession", label: "Crush Confession", emoji: "😏" },
   { id: "valentine", label: "Valentine", emoji: "💖" },
+  { id: "graduation", label: "Graduation", emoji: "🎓" },
+  { id: "apology", label: "Apology", emoji: "🙏" },
+  { id: "congratulations", label: "Congratulations", emoji: "🎉" },
+  { id: "prank", label: "Prank", emoji: "😂" },
   { id: "custom", label: "Custom", emoji: "🎨" },
 ] as const;
 
@@ -20,10 +24,14 @@ export const themes = [
   { id: "cute", label: "Cute", emoji: "🐱" },
   { id: "romantic", label: "Romantic", emoji: "🌹" },
   { id: "funny", label: "Funny", emoji: "😂" },
+  { id: "anime", label: "Anime", emoji: "💫" },
+  { id: "minimalist", label: "Minimalist", emoji: "🖤" },
+  { id: "luxury", label: "Luxury", emoji: "✨" },
+  { id: "african", label: "African", emoji: "🌍" },
+  { id: "meme", label: "Meme", emoji: "🤣" },
 ] as const;
 
 export function encodeSurpriseData(data: SurpriseData): string {
-  // Use single-letter keys for compact URLs
   const compact = {
     s: data.senderName,
     r: data.receiverName,
@@ -36,7 +44,6 @@ export function encodeSurpriseData(data: SurpriseData): string {
 
 export function decodeSurpriseData(encoded: string): SurpriseData | null {
   try {
-    // Try LZ-compressed format first
     const decompressed = LZString.decompressFromEncodedURIComponent(encoded);
     if (decompressed) {
       const compact = JSON.parse(decompressed);
@@ -51,7 +58,7 @@ export function decodeSurpriseData(encoded: string): SurpriseData | null {
       }
       return compact as SurpriseData;
     }
-    // Fallback: legacy base64 format
+    // Fallback: legacy base64
     let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
     while (b64.length % 4) b64 += "=";
     const compact = JSON.parse(decodeURIComponent(escape(atob(b64))));
@@ -139,6 +146,62 @@ export function getOccasionButtons(occasion: string): OccasionButtons {
           "Come on, you know you love me 💕",
         ],
       };
+    case "graduation":
+      return {
+        yesLabel: "Celebrate! 🎓",
+        noLabel: "Nah 😴",
+        noMessages: [
+          "You worked SO hard for this! 📚",
+          "All those late nights! ☕",
+          "Don't you want your cap? 🎓",
+          "The diploma is waiting! 📜",
+          "Your parents are watching... 👀",
+          "THROW THE CAP ALREADY! 🎉",
+          "🎓🎓🎓 JUST DO IT 🎓🎓🎓",
+        ],
+      };
+    case "apology":
+      return {
+        yesLabel: "I Forgive You 🤍",
+        noLabel: "Not Yet 😤",
+        noMessages: [
+          "I really am sorry... 🥺",
+          "I know I messed up 😔",
+          "Please give me a chance 🙏",
+          "I'll do better, I promise 💪",
+          "My heart hurts without you 💔",
+          "I won't stop trying... 😢",
+          "Please... I mean it from my heart 🤍",
+        ],
+      };
+    case "congratulations":
+      return {
+        yesLabel: "Thank You! 🎉",
+        noLabel: "Too Humble 😅",
+        noMessages: [
+          "Don't be shy! You earned it! 💪",
+          "Come on, take the credit! 🏆",
+          "Everyone's clapping! 👏",
+          "You're amazing and you know it ⭐",
+          "Accept the praise! 🌟",
+          "Okay but seriously WELL DONE 🎊",
+          "🎉🎉🎉 JUST SAY THANKS 🎉🎉🎉",
+        ],
+      };
+    case "prank":
+      return {
+        yesLabel: "Ha Ha OK 😂",
+        noLabel: "I'm Scared 😰",
+        noMessages: [
+          "It's just a prank bro 😂",
+          "Don't be scared! 👻",
+          "Come onnn it's funny! 🤣",
+          "You're being pranked! Deal with it 😏",
+          "THERE'S NO ESCAPE 💀",
+          "You walked right into this one 🪤",
+          "GOTCHA! Now click the button 😈",
+        ],
+      };
     default:
       return {
         yesLabel: "Yes ✨",
@@ -166,6 +229,14 @@ export function getOccasionMessage(occasion: string, sender: string, receiver: s
       return `${receiver}, I have something to tell you... 💕`;
     case "anniversary":
       return `Happy Anniversary, ${receiver}! 💍`;
+    case "graduation":
+      return `Congratulations on graduating, ${receiver}! 🎓`;
+    case "apology":
+      return `${receiver}, I'm truly sorry... 🤍`;
+    case "congratulations":
+      return `${receiver}, you did it! So proud of you! 🎉`;
+    case "prank":
+      return `${receiver}, I have something VERY important... 😏`;
     default:
       return `${receiver}, this is for you! ✨`;
   }
@@ -181,6 +252,14 @@ export function getSuccessMessage(occasion: string, sender: string): string {
       return `${sender} is over the moon right now! 🌙💕`;
     case "anniversary":
       return `Here's to many more years! 💍✨`;
+    case "graduation":
+      return `${sender} is so proud of you! 🎓🌟`;
+    case "apology":
+      return `${sender} feels so much better now 🤍✨`;
+    case "congratulations":
+      return `${sender} is cheering for you! 🎊🏆`;
+    case "prank":
+      return `LOL ${sender} totally got you! 😂🤣`;
     default:
       return `You made ${sender} so happy! 🎉❤️`;
   }
