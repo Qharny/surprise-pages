@@ -49,6 +49,16 @@ const placeholdersByOccasion: Record<string, string[]> = {
     "Don't worry, nothing bad... 👀",
     "I have a VERY important question 🤔",
   ],
+  mothersday: [
+    "Mom, you're my whole world 💐",
+    "Thank you for everything, always 💗",
+    "No one loves me like you do 🌷",
+  ],
+  fathersday: [
+    "Dad, you're my hero 💙",
+    "Thanks for everything you do 🏆",
+    "Best dad in the universe 🌍",
+  ],
 };
 
 const Index = () => {

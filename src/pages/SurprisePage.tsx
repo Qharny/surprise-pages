@@ -12,6 +12,8 @@ import GraduationCelebration from "@/components/celebrations/GraduationCelebrati
 import ApologyCelebration from "@/components/celebrations/ApologyCelebration";
 import CongratulationsCelebration from "@/components/celebrations/CongratulationsCelebration";
 import PrankCelebration from "@/components/celebrations/PrankCelebration";
+import MothersDayCelebration from "@/components/celebrations/MothersDayCelebration";
+import FathersDayCelebration from "@/components/celebrations/FathersDayCelebration";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -209,6 +211,8 @@ function SurpriseInteraction({ data }: { data: SurpriseData }) {
       apology: ApologyCelebration,
       congratulations: CongratulationsCelebration,
       prank: PrankCelebration,
+      mothersday: MothersDayCelebration,
+      fathersday: FathersDayCelebration,
     }[data.occasion] || ValentineCelebration;
 
     return <CelebrationComponent data={data} />;

@@ -17,6 +17,8 @@ export const occasions = [
   { id: "apology", label: "Apology", emoji: "🙏" },
   { id: "congratulations", label: "Congratulations", emoji: "🎉" },
   { id: "prank", label: "Prank", emoji: "😂" },
+  { id: "mothersday", label: "Mother's Day", emoji: "💐" },
+  { id: "fathersday", label: "Father's Day", emoji: "👨‍👧" },
   { id: "custom", label: "Custom", emoji: "🎨" },
 ] as const;
 
@@ -202,6 +204,34 @@ export function getOccasionButtons(occasion: string): OccasionButtons {
           "GOTCHA! Now click the button 😈",
         ],
       };
+    case "mothersday":
+      return {
+        yesLabel: "Love You Mom 💗",
+        noLabel: "Aww Mom 🥺",
+        noMessages: [
+          "But you're the best mom ever! 💐",
+          "Remember all those hugs? 🤗",
+          "Mom, please... 🥺",
+          "You raised me so well! 💖",
+          "I owe you everything 🌷",
+          "Don't break my heart, mom 💔",
+          "Okay just say YES already 💗",
+        ],
+      };
+    case "fathersday":
+      return {
+        yesLabel: "Love You Dad 💙",
+        noLabel: "Come On Dad 😅",
+        noMessages: [
+          "But you're my hero! 🦸",
+          "Remember teaching me to ride a bike? 🚲",
+          "Dad jokes incoming if you say no 😂",
+          "You're the GOAT, dad 🐐",
+          "I learned everything from you 💙",
+          "Don't make me beg, dad 🙏",
+          "Just accept the love already! 💙",
+        ],
+      };
     default:
       return {
         yesLabel: "Yes ✨",
@@ -237,6 +267,10 @@ export function getOccasionMessage(occasion: string, sender: string, receiver: s
       return `${receiver}, you did it! So proud of you! 🎉`;
     case "prank":
       return `${receiver}, I have something VERY important... 😏`;
+    case "mothersday":
+      return `${receiver}, Happy Mother's Day! 💐`;
+    case "fathersday":
+      return `${receiver}, Happy Father's Day! 👨‍👧`;
     default:
       return `${receiver}, this is for you! ✨`;
   }
@@ -260,6 +294,10 @@ export function getSuccessMessage(occasion: string, sender: string): string {
       return `${sender} is cheering for you! 🎊🏆`;
     case "prank":
       return `LOL ${sender} totally got you! 😂🤣`;
+    case "mothersday":
+      return `${sender} loves you more than words, mom! 💐💗`;
+    case "fathersday":
+      return `${sender} thinks you're the best dad ever! 💙🏆`;
     default:
       return `You made ${sender} so happy! 🎉❤️`;
   }
